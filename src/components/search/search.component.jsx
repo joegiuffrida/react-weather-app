@@ -8,11 +8,19 @@ const Search = ({ onSearchChange }) => {
   const loadOptions = async (inputValue) => {
     try {
       const response = await fetch(
-        `${GEO_API_URL}/cities?minPopulation=10000&namePrefix=${inputValue}`,
+        `${GEO_API_URL}/cities?minPopulation=5000&namePrefix=${inputValue}`,
         geoApiOptions
       );
       const data = await response.json();
       console.log(data);
+      return {
+        options: data.data.map((city) => {
+          return {
+            value: `${city.latitude} ${city.longitude}`,
+            label: `${city.name}, ${city.region}, ${city.countryCode}`,
+          };
+        }),
+      };
     } catch (error) {
       console.error('error at loadOptions', error);
     }
